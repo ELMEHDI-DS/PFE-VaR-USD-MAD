@@ -1,6 +1,5 @@
 
 !pip install gradio arch
-# 📦 Imports
 import gradio as gr
 import pandas as pd
 import numpy as np
@@ -9,7 +8,6 @@ from arch import arch_model
 from scipy.stats import t
 from datetime import datetime
 
-# 🔄 Fonction pour récupérer le taux USD/MAD actuel
 def get_taux_usd_mad():
     try:
         usd_mad_data = yf.download("USDMAD=X", period="1d", interval="1m", progress=False)
@@ -25,7 +23,7 @@ def get_taux_usd_mad():
     except Exception as e:
         return f"Erreur lors de la récupération du taux : {str(e)}"
 
-# 🔄 Fonction pour valider les entrées
+
 def validate_inputs(montant_usd, date_fact, date_ech):
     if montant_usd <= 0:
         raise ValueError("Le montant doit être positif.")
@@ -41,7 +39,7 @@ def validate_inputs(montant_usd, date_fact, date_ech):
         raise ValueError("L'horizon doit être d'au moins 1 jour.")
     return horizon
 
-# 🔄 Fonction principale
+
 def calculer_var(montant_usd, date_fact, date_ech, stress_test):
     try:
         # 🔹 Valider les entrées
@@ -107,7 +105,7 @@ def calculer_var(montant_usd, date_fact, date_ech, stress_test):
 
         # 🔹 Résumé formaté
         resume = f"""
-💱 Taux USD/MAD actuel : {taux_usd_mad:.4f}
+
 Montant comptabilisé à la date de facturation : {montant_comptabilise:,.0f} MAD
 Montant estimé au règlement (scénario défavorable) : {montant_estime:,.0f} MAD
 VaR journalière (en %) : {var_journaliere_pct:.4f}%
@@ -121,7 +119,7 @@ Perte potentielle maximale : {perte_potentielle:,.0f} MAD
     except Exception as e:
         return f"Erreur : {str(e)}"
 
-# 🎛️ Interface Gradio
+
 with gr.Blocks() as demo:
     gr.Markdown("#  FX Risk Monitor - VaR quantile LSTM")
     montant = gr.Number(label="Montant créance (USD)", value=10000)
